@@ -51,6 +51,24 @@ class AutocompleteController {
   getAutoSearch() {
     const search$ = (
       /* ...你的代码... */
+      payload$
+        .pipe(
+          switchMap(inputValue => {
+            if (!inputValue || inputValue.length > 30) {
+              toggleWarning();
+              return of(null);
+            } else {
+              return of(inputValue).pipe(
+                delay(500),
+                mergeMap(() => {
+                  setLoading(inputValue);
+                  return searchQuery(inputValue);
+                }),
+                startWith(null)
+              );
+            }
+          })
+        )
     )
 
     return search$;
