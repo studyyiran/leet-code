@@ -1,0 +1,17 @@
+.option:hover {
+    background: yellow;
+}
+
+.last-time-select {
+    background: gray;
+}
+
+::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: gray;
+    opacity: 1; /* Firefox */
+}
+
+.input-disabled {
+    background: gray;
+}

@@ -1,68 +1,59 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[题目3 4 演示地址](https://codesandbox.io/s/1vrno809kj)
 
-## Available Scripts
+题目3见/src/index.js  /src/autoComplete
 
-In the project directory, you can run:
 
-### `npm start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+题目4见下文
+# RxJS 题
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## 题目描述
 
-### `npm test`
+使用 RxJS 6+，实现一个 Autocomplete 组件的基本行为，需满足以下要求：
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. 用户停止输入 500ms 后，再发送请求；
+2. 如果请求没有返回时，用户就再次输入，要取消之前的请求；
+3. 不能因为搜索而影响用户正常输入新的字符；
+4. 如果用户输入超过 30 个字符，取消所有请求，并显示提示：您输入的字符数过多。
 
-### `npm run build`
+你可以直接使用 [编写工程化的组件](./engineering_zh.md) 中写好的 `Autocomplete` 组件完成本题。
+亦可在下方的伪代码中填充你的答案，不要求直接执行，主要考察思路。
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 伪 TS 代码
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+```typescript
+class AutocompleteController {
+  /**
+   * 每次用户输入任意值，都会从 payload$ 流中获得
+   * 比如，用户依次输入 a, b, c
+   * 那么 payload$ 流会获得三个值："a", "ab", "abc"
+   */
+  payload$: Subject<string>;
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  subscription: Subscription;
 
-### `npm run eject`
+  constructor() {
+    this.subscription = this.getAutoSearch().subscribe();
+  }
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  // 更新 Input 框中的搜索词
+  setSearchStr: (str: string) => void;
+  // 更新搜索状态
+  setLoading: (isLoading: boolean) => void;
+  // 显示或隐藏警告信息
+  toggleWarning: (isShown?: boolean) => void;
+  // 发送请求，获取搜索结果
+  searchQuery: (str: string) => Observable<User[]>;
+  // 更新搜索结果列表
+  setSearchResults: (users: User[]) => void;
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  // 你要实现的方法
+  getAutoSearch() {
+    const search$ = (
+      /* ...你的代码... */
+    )
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+    return search$;
+  }
+}
+```
