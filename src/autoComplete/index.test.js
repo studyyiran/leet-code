@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from '../../../../../__mocks__/config';
+import { shallow, mount } from '../../__mocks__/config';
 import {Option, AutoComplete} from './index';
 
 
