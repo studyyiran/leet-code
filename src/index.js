@@ -97,7 +97,9 @@ function App () {
       .pipe(
         switchMap(inputValue => {
           if (!inputValue || inputValue.length > 30) {
-            toggleWarning();
+            if (inputValue.length > 30) {
+              toggleWarning();
+            }
             return of(null);
           } else {
             return of(inputValue).pipe(
@@ -135,8 +137,9 @@ function App () {
     <div>
       <AutoComplete {...props}>
         <div>
-          <div>hello search here</div>
-          <input />
+          <div>enter some letter here-></div>
+            <input />
+          <div>it will find some github user name</div>
         </div>
       </AutoComplete>
     </div>
