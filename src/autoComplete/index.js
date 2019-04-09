@@ -14,21 +14,21 @@ export function Option({ onClick, children, value, inputValue, className }) {
 }
 
 export function AutoComplete({
-                               dataSource,
-                               children,
-                               onSearch,
-                               onSelect,
-                               placeholder,
-                               autoFocus = false,
-                               disabled = false,
-                               filterOption,
-                               defaultValue = "",
-                               defaultOpen = false,
-                               onDropdownVisibleChange,
-                               onChange,
-                               onBlur,
-                               onFocus
-                             }) {
+   dataSource,
+   children,
+   onSearch,
+   onSelect,
+   placeholder,
+   autoFocus = false,
+   disabled = false,
+   filterOption,
+   defaultValue = "",
+   defaultOpen = false,
+   onDropdownVisibleChange,
+   onChange,
+   onBlur,
+   onFocus
+  }) {
   const [show, setShow] = useState(defaultOpen);
   const [inputValue, setInputValue] = useState(defaultValue);
 
@@ -122,19 +122,24 @@ export function AutoComplete({
 
   function replaceInput(child) {
     let dom = child;
+    if (!child.type) {
+      return dom
+    }
     if (child.type === "input") {
       dom = defaultInputJsx;
     } else if (child.props && child.props.children) {
       dom = React.Children.map(child.props.children, replaceInput);
+      dom = React.cloneElement(child, {children: dom});
     }
-    return dom;
+    return dom
   }
 
   function renderInput() {
-    let dom = children;
+    let dom;
     // 如果自定义了input
-    if (dom) {
-      dom = replaceInput(React.cloneElement(children));
+    if (children) {
+      dom = React.Children.map(children, replaceInput)
+      // dom = (React.cloneElement(children));
     } else {
       dom = defaultInputJsx;
     }
